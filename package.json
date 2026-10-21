@@ -1,0 +1,19 @@
+{
+  "name": "open-run",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Open Run Protocol (ORP) and Open Run Backend Profile (ORBP)",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/*.test.js conformance/*.test.js && node scripts/check-no-brand.mjs",
+    "start:example": "node examples/memory-executor/server.js"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

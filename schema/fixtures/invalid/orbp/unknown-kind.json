@@ -1,0 +1,11 @@
+{
+  "protocol": "open-run-backend",
+  "version": 1,
+  "backends": [
+    {
+      "id": "x",
+      "kind": "agent-manual",
+      "capabilities": {}
+    }
+  ]
+}

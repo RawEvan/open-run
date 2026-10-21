@@ -1,0 +1,21 @@
+{
+  "protocol": "open-run-backend",
+  "version": 1,
+  "backends": [
+    {
+      "id": "remote",
+      "kind": "agent-remote",
+      "capabilities": { "tools": true, "approvals": true }
+    },
+    {
+      "id": "hook",
+      "kind": "agent-hook",
+      "capabilities": { "observe": true }
+    },
+    {
+      "id": "ax",
+      "kind": "os-ax",
+      "capabilities": { "capture": true, "teach": true }
+    }
+  ]
+}

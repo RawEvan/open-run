@@ -1,0 +1,23 @@
+{
+  "protocol": "open-run",
+  "version": 1,
+  "capabilities": {
+    "runs": true,
+    "events_sse": true,
+    "cancel": true
+  },
+  "orbp": {
+    "protocol": "open-run-backend",
+    "version": 1,
+    "document_url": "https://example.invalid/ORBP.md",
+    "media_type": "application/vnd.open-run-backend+json"
+  },
+  "backends": [
+    {
+      "id": "echo",
+      "kind": "direct-llm",
+      "capabilities": { "complete": true },
+      "label": "Echo"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "protocol": "open-run",
+  "version": 2,
+  "capabilities": { "runs": true },
+  "orbp": { "protocol": "open-run-backend", "version": 1 },
+  "backends": []
+}

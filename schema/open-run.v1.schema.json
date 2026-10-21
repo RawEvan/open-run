@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/RawEvan/open-run/main/schema/open-run.v1.schema.json",
+  "title": "Open Run Protocol v1",
+  "$defs": {
+    "discovery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["protocol", "version", "capabilities", "orbp", "backends"],
+      "properties": {
+        "protocol": { "type": "string", "const": "open-run" },
+        "version": { "type": "integer", "const": 1 },
+        "capabilities": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "runs": { "type": "boolean" },
+            "events_sse": { "type": "boolean" },
+            "cancel": { "type": "boolean" }
+          }
+        },
+        "orbp": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["protocol", "version"],
+          "properties": {
+            "protocol": { "type": "string", "const": "open-run-backend" },
+            "version": { "type": "integer", "minimum": 1 },
+            "document_url": { "type": "string", "minLength": 1 },
+            "media_type": { "type": "string", "minLength": 1 }
+          }
+        },
+        "backends": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/backendSummary" }
+        }
+      }
+    },
+    "backendSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "kind": {
+          "type": "string",
+          "enum": ["agent-remote", "agent-hook", "direct-llm", "assist", "os-ax"]
+        },
+        "capabilities": {
+          "type": "object",
+          "additionalProperties": { "type": "boolean" }
+        },
+        "label": { "type": "string", "maxLength": 120 }
+      }
+    },
+    "createRun": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["backendId"],
+      "properties": {
+        "protocol": { "type": "string", "const": "open-run" },
+        "version": { "type": "integer", "const": 1 },
+        "backendId": { "type": "string", "minLength": 1 },
+        "prompt": { "type": "string", "minLength": 1 },
+        "messages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["role", "content"],
+            "properties": {
+              "role": { "type": "string", "enum": ["system", "user", "assistant"] },
+              "content": { "type": "string" }
+            }
+          }
+        },
+        "cwd": { "type": "string" },
+        "clientRef": { "type": "string", "maxLength": 512 },
+        "attachments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name"],
+            "properties": {
+              "name": { "type": "string" },
+              "media_type": { "type": "string" },
+              "size": { "type": "integer", "minimum": 0 }
+            }
+          }
+        }
+      },
+      "anyOf": [
+        { "required": ["prompt"] },
+        { "required": ["messages"] }
+      ]
+    },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "status", "backendId", "created_at", "updated_at"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^run_[a-z0-9_]{1,40}$" },
+        "status": {
+          "type": "string",
+          "enum": ["queued", "running", "completed", "cancelled", "failed"]
+        },
+        "backendId": { "type": "string" },
+        "clientRef": { "type": ["string", "null"] },
+        "created_at": { "type": "string", "format": "date-time" },
+        "updated_at": { "type": "string", "format": "date-time" },
+        "text": { "type": "string" },
+        "error": { "type": "string" }
+      }
+    }
+  }
+}
